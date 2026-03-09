@@ -245,24 +245,6 @@ resource "aws_s3_object" "website_files" {
   etag = filemd5("${path.module}/src/website/${each.value}")
 }
 
-# Build Docker image and upload
-# https://www.linkedin.com/pulse/how-upload-docker-images-aws-ecr-using-terraform-hendrix-roa/
-resource "null_resource" "docker_packaging" {
-  
-  triggers = {
-    api_source_code_hash = local.api_hash
-  }
-
-  provisioner "local-exec" {
-    # Sem o 'interpreter', o Terraform usa cmd.exe no Windows e /bin/sh no Mac/Linux
-    command = "aws ecr get-login-password --region ${local.region} | docker login --username AWS --password-stdin ${local.account_id}.dkr.ecr.${local.region}.amazonaws.com && docker build -t ${module.ecr.repository_url}:${local.image_tag} ./src/api && docker push ${module.ecr.repository_url}:${local.image_tag}"
-  }
-
-  depends_on = [
-    module.ecr.ecr_repository,
-  ]
-}
-
 # Permission for EventBridge to invoke Lambda
 resource "aws_lambda_permission" "allow_eventbridge" {
   statement_id  = "AllowExecutionFromEventBridge"

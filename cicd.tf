@@ -1,6 +1,6 @@
 # 1. Bucket S3 para armazenar os artefatos temporários entre as etapas do pipeline
 resource "aws_s3_bucket" "codepipeline_bucket" {
-  bucket        = "${local.name}-codepipeline-artifacts"
+  bucket        = lower("${local.name}-codepipeline-artifacts")
   force_destroy = true
 }
 
@@ -9,7 +9,7 @@ resource "aws_s3_bucket" "codepipeline_bucket" {
 # caso os seus repositórios já estejam por lá.
 resource "aws_codestarconnections_connection" "repo" {
   name          = "${local.name}-repo-conn"
-  provider_type = "GitHub" 
+  provider_type = "GitLab" 
 }
 
 # 3. IAM Role para o AWS CodeBuild (Permissões de Build)
