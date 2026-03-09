@@ -5,35 +5,32 @@ phases:
     runtime-versions:
       python: 3.12
     commands:
-      - echo "Instalando dependencias..."
       - pip install -r src/api/requirements.txt
       - pip install pylint bandit pytest checkov
-      - echo "Instalando TFLint..."
       - curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh | bash
 
   pre_build:
     commands:
-      - echo "Fase de Testes Iniciada"
+      - echo Fase de Testes Iniciada
       - pylint src/api/app.py || true
       - bandit -r src/api/ || true
-      - pytest src/api/test_app.py || echo "Aviso: test_app.py nao encontrado"
+      - pytest src/api/test_app.py || true
       - tflint --init
       - tflint || true
       - checkov -d . --framework terraform || true
-      - echo "Autenticando no Amazon ECR..."
       - aws ecr get-login-password --region $AWS_DEFAULT_REGION | docker login --username AWS --password-stdin $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com
 
   build:
     commands:
-      - echo "Build iniciado em `date`"
+      - echo Build iniciado em `date`
       - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${COMMIT_HASH:=latest}
+      - IMAGE_TAG=${COMMIT_HASH:-latest}
       - docker build -t $IMAGE_REPO_NAME:$IMAGE_TAG src/api/
       - docker tag $IMAGE_REPO_NAME:$IMAGE_TAG $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
 
   post_build:
     commands:
-      - echo "Build completado em `date`"
+      - echo Build completado em `date`
       - docker push $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG
       - printf '[{"name":"app","imageUri":"%s"}]' $AWS_ACCOUNT_ID.dkr.ecr.$AWS_DEFAULT_REGION.amazonaws.com/$IMAGE_REPO_NAME:$IMAGE_TAG > imagedefinitions.json
 
