@@ -1,4 +1,5 @@
 # configuração do provider aws
+## teste
 # Define o provider AWS utilizando a região especificada nas variáveis locais
 provider "aws" {
   region = local.region
@@ -9,7 +10,6 @@ terraform {
   # Versão mínima do Terraform necessária para executar este código
   required_version = ">= 1.5.0" 
 
-  required_providers {
     # provider aws para gerenciar recursos na amazon web services
     aws = {
       source  = "hashicorp/aws"
