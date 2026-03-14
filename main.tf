@@ -1,5 +1,4 @@
 # configuração do provider aws
-## teste
 # Define o provider AWS utilizando a região especificada nas variáveis locais
 provider "aws" {
   region = local.region
