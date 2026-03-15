@@ -1,4 +1,4 @@
-# Dreamsquad App
+# DevOps App
 
 ## Objetivo
 Criar um site estático simples para demonstrar um pipeline CI/CD completo e automatizado na AWS, utilizando as melhores práticas de Infraestrutura como Código.
