@@ -36,5 +36,7 @@ The project implements a robust automation workflow:
 | **RDS** | Fully managed PostgreSQL database for metadata storage. |
 
 ## Documentation & References used
-- For [Presigned URLs](https://docs.aws.amazon.com/boto3/latest/guide/s3-presigned-urls.html)
-- For [Logging](https://docs.python.org/3/howto/logging.html)
+- [Presigned URLs](https://docs.aws.amazon.com/boto3/latest/guide/s3-presigned-urls.html)
+-  [Logging](https://docs.python.org/3/howto/logging.html)
+-  [Signal Handlers](https://docs.python.org/3/library/signal.html)
+-  [Graceful shutdowns with ECS](https://aws.amazon.com/blogs/containers/graceful-shutdowns-with-ecs/)
