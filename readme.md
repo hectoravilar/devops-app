@@ -46,3 +46,6 @@ The project implements a robust automation workflow:
 - [DynamoDB Client](https://docs.aws.amazon.com/boto3/latest/reference/services/dynamodb.html)
 - [DynamoDB put_item](https://docs.aws.amazon.com/boto3/latest/reference/services/dynamodb/client/put_item.html)
 - [DynamoDB Table](https://docs.aws.amazon.com/boto3/latest/reference/services/dynamodb/table/)
+- [SQS.Client.receive_message](https://docs.aws.amazon.com/boto3/latest/reference/services/sqs/client/receive_message.html)
+- [Amazon SQS short and long polling](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html#sqs-long-polling)
+- [SQS.Client.delete_message](https://docs.aws.amazon.com/boto3/latest/reference/services/sqs/client/delete_message.html)
