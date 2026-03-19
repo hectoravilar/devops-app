@@ -5,7 +5,7 @@ Docflow is a high-performance, **Asynchronous Event-Driven Document Processing P
 ## Objective
 The primary goal is to provide a seamless, non-blocking user experience. By utilizing **Presigned URLs**, the system ensures secure file transfers while offloading heavy extraction tasks (OCR/Parsing) to a scalable backend architecture.
 
-##  Tech Stack
+## Tech Stack
 * **Language:** Python
 * **Document Processing:** PyPDF2 / OCR (Tesseract or AWS Textract)
 * **Frontend Hosting:** AWS CloudFront + S3 (Static Web Hosting)
@@ -13,11 +13,18 @@ The primary goal is to provide a seamless, non-blocking user experience. By util
 * **Containerization:** Docker on AWS ECS (Fargate/EC2)
 * **Database:** DynamoDB
 
-##  Architecture & Workflow
+## Architecture & Workflow
 1. **Secure Upload:** The frontend requests a **Presigned URL** from S3 to upload the document directly, reducing server overhead.
 2. **Event Trigger:** Once the upload is complete, an event is sent to **AWS SQS**.
 3. **Background Processing:** A Python worker running on **Docker (ECS)** consumes the message, processes the file, and extracts data.
 4. **Persistence:** The extracted metadata is stored in **DynamoDB**.
+
+## Current Progress (Backend Worker)
+The core background worker infrastructure is currently built with production-ready patterns:
+* **Graceful Shutdown:** Intercepts `SIGTERM` and `SIGINT` signals to prevent data corruption during container termination.
+* **Fail-Fast Configuration:** Validates critical environment variables on startup, preventing silent failures.
+* **SQS Long Polling:** Efficiently polls messages using `WaitTimeSeconds` to reduce AWS API costs, complete with poison-pill handling.
+* **Serverless Persistence:** Integrates with DynamoDB to maintain document processing states and UTC audit trails.
 
 ## CI/CD Pipeline
 The project implements a robust automation workflow:
@@ -37,9 +44,9 @@ The project implements a robust automation workflow:
 
 ## Documentation & References used
 - [Presigned URLs](https://docs.aws.amazon.com/boto3/latest/guide/s3-presigned-urls.html)
--  [Logging](https://docs.python.org/3/howto/logging.html)
--  [Signal Handlers](https://docs.python.org/3/library/signal.html)
--  [Graceful shutdowns with ECS](https://aws.amazon.com/blogs/containers/graceful-shutdowns-with-ecs/)
+- [Logging](https://docs.python.org/3/howto/logging.html)
+- [Signal Handlers](https://docs.python.org/3/library/signal.html)
+- [Graceful shutdowns with ECS](https://aws.amazon.com/blogs/containers/graceful-shutdowns-with-ecs/)
 - [classmethod() in Python](https://www.geeksforgeeks.org/python/classmethod-in-python/)
 - [OOP in Python](https://realpython.com/python3-object-oriented-programming/)
 - [ValueError](https://realpython.com/ref/builtin-exceptions/valueerror/)
