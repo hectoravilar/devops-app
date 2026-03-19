@@ -11,13 +11,13 @@ The primary goal is to provide a seamless, non-blocking user experience. By util
 * **Frontend Hosting:** AWS CloudFront + S3 (Static Web Hosting)
 * **Messaging/Queuing:** AWS SQS
 * **Containerization:** Docker on AWS ECS (Fargate/EC2)
-* **Database:** AWS RDS PostgreSQL
+* **Database:** DynamoDB
 
 ##  Architecture & Workflow
 1. **Secure Upload:** The frontend requests a **Presigned URL** from S3 to upload the document directly, reducing server overhead.
 2. **Event Trigger:** Once the upload is complete, an event is sent to **AWS SQS**.
 3. **Background Processing:** A Python worker running on **Docker (ECS)** consumes the message, processes the file, and extracts data.
-4. **Persistence:** The extracted metadata is stored in **RDS PostgreSQL** for user retrieval.
+4. **Persistence:** The extracted metadata is stored in **DynamoDB**.
 
 ## CI/CD Pipeline
 The project implements a robust automation workflow:
@@ -33,7 +33,7 @@ The project implements a robust automation workflow:
 | **S3** | Secure object storage for document files. |
 | **SQS** | Message broker to decouple upload and processing. |
 | **ECS** | Managed container orchestration for the backend workers. |
-| **RDS** | Fully managed PostgreSQL database for metadata storage. |
+| **DynamoDB** | Serverless NoSQL database to store document metadata and processing status. |
 
 ## Documentation & References used
 - [Presigned URLs](https://docs.aws.amazon.com/boto3/latest/guide/s3-presigned-urls.html)
@@ -43,3 +43,6 @@ The project implements a robust automation workflow:
 - [classmethod() in Python](https://www.geeksforgeeks.org/python/classmethod-in-python/)
 - [OOP in Python](https://realpython.com/python3-object-oriented-programming/)
 - [ValueError](https://realpython.com/ref/builtin-exceptions/valueerror/)
+- [DynamoDB Client](https://docs.aws.amazon.com/boto3/latest/reference/services/dynamodb.html)
+- [DynamoDB put_item](https://docs.aws.amazon.com/boto3/latest/reference/services/dynamodb/client/put_item.html)
+- [DynamoDB Table](https://docs.aws.amazon.com/boto3/latest/reference/services/dynamodb/table/)
