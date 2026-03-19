@@ -20,7 +20,6 @@ def main():
         # INFO is the sweet spot for production
         format='%(asctime)s:%(levelname)s:%(message)s', level=logging.INFO
     )
-
     # Spin up the logger for this module
     logger = logging.getLogger(__name__)
 
