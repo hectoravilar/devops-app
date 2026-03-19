@@ -3,6 +3,7 @@ import signal
 import time
 import os
 import sys
+from app.sqs_worker import process_messages
 
 is_running = True
 
@@ -42,9 +43,7 @@ def main():
         # start_sqs_worker()
 
         while is_running:
-            # the real calls will be here
-
-            time.sleep(1)  # testing
+            process_messages()
 
         logging.info("Worker gracefullly shut down!")
 
