@@ -40,3 +40,6 @@ The project implements a robust automation workflow:
 -  [Logging](https://docs.python.org/3/howto/logging.html)
 -  [Signal Handlers](https://docs.python.org/3/library/signal.html)
 -  [Graceful shutdowns with ECS](https://aws.amazon.com/blogs/containers/graceful-shutdowns-with-ecs/)
+- [classmethod() in Python](https://www.geeksforgeeks.org/python/classmethod-in-python/)
+- [OOP in Python](https://realpython.com/python3-object-oriented-programming/)
+- [ValueError](https://realpython.com/ref/builtin-exceptions/valueerror/)
