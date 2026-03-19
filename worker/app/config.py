@@ -7,9 +7,7 @@ class Config:
     AWS_REGION = os.getenv("AWS_REGION", "us-east-1")
     SQS_QUEUE_URL = os.getenv("SQS_QUEUE_URL")
     # Database
-    DB_HOST = os.getenv("DB_HOST", "localhost")
-    DB_USER = os.getenv("DB_USER")
-    DB_PASSWORD = os.getenv("DB_PASSWORD")
+    DYNAMODB_TABLE_NAME = os.getenv("DYNAMODB_TABLE_NAME", "docflow-documents")
 
     @classmethod
     def validate_config(cls):
@@ -18,8 +16,8 @@ class Config:
         if not cls.SQS_QUEUE_URL:
             missing_vars.append("SQS_QUEUE_URL")
 
-        if not cls.DB_PASSWORD:
-            missing_vars.append("DB_PASSWORD")
+        if not cls.DYNAMODB_TABLE_NAME:
+            missing_vars.append("DYNAMODB_TABLE_NAME")
 
         if missing_vars:
             raise ValueError(
