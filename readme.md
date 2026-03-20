@@ -59,3 +59,9 @@ The project implements a robust automation workflow:
 - [S3.Client.get_object](https://docs.aws.amazon.com/boto3/latest/reference/services/s3/client/get_object.html#get-object)
 - [Python Regex](https://www.w3schools.com/python/python_regex.asp)
 - [pypdf lib: Exceptions, Warnings, Log messages](https://pypdf.readthedocs.io/en/3.17.1/user/suppress-warnings.html)
+
+## Terraform Documentation used
+- [AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [aws_s3_bucket](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket)
+- [aws_sqs_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue)
+-[aws_dynamodb_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table)
