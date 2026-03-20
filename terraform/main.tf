@@ -41,3 +41,16 @@ resource "aws_sqs_queue" "docflow_queue" {
     Environment = "DevOps"
   }
 }
+
+resource "aws_dynamodb_table" "docflow_table" {
+  name             = "docflow-documents"
+  hash_key         = "document_id"
+  billing_mode     = "PAY_PER_REQUEST"
+  stream_enabled   = true
+  stream_view_type = "NEW_AND_OLD_IMAGES"
+
+  attribute {
+    name = "document_id"
+    type = "S"
+  }
+}
