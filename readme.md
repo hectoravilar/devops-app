@@ -66,4 +66,7 @@ The project implements a robust automation workflow:
 - [aws_sqs_queue](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/sqs_queue)
 - [aws_dynamodb_table](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/dynamodb_table)
 - [input variables to add module arguments](https://developer.hashicorp.com/terraform/language/values/variables)
-- [outputs to expose module data](https://developer.hashicorp.com/terraform/language/values/outputs) 
+- [outputs to expose module data](https://developer.hashicorp.com/terraform/language/values/outputs)
+
+## Dockerfile Documentation used
+- [Writing a Dockerfile](https://docs.docker.com/get-started/docker-concepts/building-images/writing-a-dockerfile/)
