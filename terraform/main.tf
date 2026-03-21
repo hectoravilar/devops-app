@@ -9,25 +9,21 @@ terraform {
 
 # Configure the AWS Provider
 provider "aws" {
-  region = "us-east-1"
+  region = var.aws_region
 }
 resource "aws_s3_bucket" "docflow_bucket" {
-  bucket = "docflow-pdfs-hector-dev"
+  bucket = "${var.project_name}-pdfs-hector-${var.environment}"
 
   tags = {
-    Name        = "My bucket"
-    Environment = "DevOps"
+    Name        = var.project_name
+    Environment = var.environment
   }
 }
 resource "aws_sqs_queue" "docflow_dlq" {
-  name = "docflow-dlq"
-
-  tags = {
-    Environment = "DevOps"
-  }
+  name = "${var.project_name}-dlq-${var.environment}"
 }
 resource "aws_sqs_queue" "docflow_queue" {
-  name                       = "docflow-sqs"
+  name                       = "${var.project_name}-sqs-${var.environment}"
   max_message_size           = 2048
   message_retention_seconds  = 86400
   visibility_timeout_seconds = 60
@@ -38,12 +34,12 @@ resource "aws_sqs_queue" "docflow_queue" {
   })
 
   tags = {
-    Environment = "DevOps"
+    Environment = var.environment
   }
 }
 
 resource "aws_dynamodb_table" "docflow_table" {
-  name             = "docflow-documents"
+  name             = "${var.project_name}-dynamodb-${var.environment}"
   hash_key         = "document_id"
   billing_mode     = "PAY_PER_REQUEST"
   stream_enabled   = true
