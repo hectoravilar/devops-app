@@ -50,3 +50,12 @@ resource "aws_dynamodb_table" "docflow_table" {
     type = "S"
   }
 }
+resource "aws_ecr_repository" "docflow_repository" {
+  name                 = "docflow-worker-s${var.environment}"
+  image_tag_mutability = "MUTABLE"
+  force_delete         = true
+
+  image_scanning_configuration {
+    scan_on_push = true
+  }
+}
