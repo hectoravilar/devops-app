@@ -77,6 +77,9 @@ The project implements a robust automation workflow:
 - [input variables to add module arguments](https://developer.hashicorp.com/terraform/language/values/variables)
 - [outputs to expose module data](https://developer.hashicorp.com/terraform/language/values/outputs)
 - [aws_ecr_repository](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository)
+- [aws_cloudfront_origin_access_control](https://registry.terraform.io/providers/hashicorp/aws/4.63.0/docs/resources/cloudfront_origin_access_control)
+- [aws_cloudfront_distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution)
+- [Resource: aws_s3_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy)
 
 ## Dockerfile Documentation used
 
