@@ -63,3 +63,13 @@ resource "aws_lambda_function" "api_handler" {
     }
   }
 }
+resource "aws_apigatewayv2_api" "api_gateway" {
+  name          = lower("${var.project_name}-${var.environment}")
+  protocol_type = "HTTP"
+  cors_configuration {
+    allow_origins = ["*"]
+    allow_methods = ["POST", "OPTIONS"]
+    allow_headers = ["Content-Type"]
+    max_age       = 300
+  }
+}
