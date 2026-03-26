@@ -73,3 +73,4 @@ resource "aws_apigatewayv2_api" "api_gateway" {
     max_age       = 300
   }
 }
+
