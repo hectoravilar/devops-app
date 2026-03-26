@@ -79,4 +79,8 @@ resource "aws_apigatewayv2_integration" "lambda_integration" {
   integration_method = "POST"
   integration_uri    = aws_lambda_function.api_handler.invoke_arn
 }
-
+resource "aws_apigatewayv2_route" "lambda_route" {
+  api_id    = aws_apigatewayv2_api.api_gateway.id
+  route_key = "POST /upload"
+  target    = "integrations/${aws_apigatewayv2_integration.lambda_integration.id}"
+}
