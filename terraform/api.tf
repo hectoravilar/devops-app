@@ -30,7 +30,7 @@ data "aws_iam_policy_document" "lambda_policy" {
   statement {
     actions = ["s3:PutObject"]
     # FIX: Dynamic reference! This prevents dependency breaks.
-    resources = ["${aws_s3_bucket.YOUR_BUCKET_RESOURCE_NAME.arn}/*"]
+    resources = ["${aws_s3_bucket.docflow_bucket.arn}/*"]
   }
 }
 
