@@ -95,6 +95,7 @@ resource "aws_apigatewayv2_stage" "default_stage" {
   api_id      = aws_apigatewayv2_api.api_gateway.id
   name        = "$default"
   auto_deploy = true
+  depends_on  = [aws_apigatewayv2_route.lambda_route]
 }
 output "api_endpoint" {
   value       = "${aws_apigatewayv2_api.api_gateway.api_endpoint}/upload"
