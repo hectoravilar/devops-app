@@ -34,9 +34,10 @@ The entire infrastructure is codified using Terraform, ensuring consistent, repe
 
 - Provisioned isolated S3 buckets for Frontend (Static Hosting) and Backend (PDF processing).
 - Configured **CloudFront Distribution** coupled with **Origin Access Control (OAC)** to enforce that the frontend bucket is entirely private and only accessible via the CDN.
-- Built a highly efficient, cost-effective routing layer using **API Gateway v2 (HTTP API)**.
+- Built a highly efficient, cost-effective routing layer using **API Gateway v2 (HTTP API)** with a `$default` auto-deploy stage.
 - Configured strict **CORS policies** at the API Gateway level to secure cross-origin frontend requests.
 - Applied **Least Privilege IAM Policies**, explicitly granting API Gateway execution permissions to invoke the Lambda, and restricting the Lambda's access strictly to the target S3 bucket and CloudWatch logs.
+- Automated Lambda deployment packaging using Terraform's native `archive_file` data source.
 - Deployed DynamoDB tables with `PAY_PER_REQUEST` billing mode for cost-effective serverless storage.
 - Provisioned SQS standard queues with dead-letter queue (DLQ) routing for poison-pill handling.
 
@@ -78,26 +79,31 @@ A robust automation workflow is actively running:
 
 ### AWS & Serverless Logic
 
-- [Presigned URLs](https://docs.aws.amazon.com/boto3/latest/guide/s3-presigned-urls.html)
+- [Presigned URLs in Boto3](https://docs.aws.amazon.com/boto3/latest/guide/s3-presigned-urls.html)
 - [DynamoDB Client](https://docs.aws.amazon.com/boto3/latest/reference/services/dynamodb.html)
 - [SQS.Client.receive_message](https://docs.aws.amazon.com/boto3/latest/reference/services/sqs/client/receive_message.html)
 - [Amazon SQS short and long polling](https://docs.aws.amazon.com/AWSSimpleQueueService/latest/SQSDeveloperGuide/sqs-short-and-long-polling.html#sqs-long-polling)
+- [Building AWS Lambda functions with Python](https://docs.aws.amazon.com/lambda/latest/dg/lambda-python.html)
 
 ### Python & Worker Logic
 
 - [pypdf Documentation](https://pypdf.readthedocs.io/en/stable/)
-- [Logging](https://docs.python.org/3/howto/logging.html)
+- [Logging in Python](https://docs.python.org/3/howto/logging.html)
 - [Signal Handlers](https://docs.python.org/3/library/signal.html)
 - [OOP in Python](https://realpython.com/python3-object-oriented-programming/)
 
 ### DevOps & Infrastructure (Terraform)
 
-- [AWS Provider](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
-- [aws_s3_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy)
+- [AWS Provider Documentation](https://registry.terraform.io/providers/hashicorp/aws/latest/docs)
+- [archive_file (Lambda Packaging)](https://registry.terraform.io/providers/hashicorp/archive/latest/docs/data-sources/file)
+- [aws_iam_role & policies](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role)
+- [aws_lambda_function](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_function)
+- [aws_lambda_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission)
 - [aws_apigatewayv2_api (HTTP API)](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_api)
 - [aws_apigatewayv2_integration](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_integration)
 - [aws_apigatewayv2_route](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_route)
-- [aws_lambda_permission](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/lambda_permission)
+- [aws_apigatewayv2_stage](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/apigatewayv2_stage)
+- [aws_s3_bucket_policy](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/s3_bucket_policy)
 - [aws_ecr_repository](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/ecr_repository)
 - [aws_cloudfront_distribution](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/cloudfront_distribution)
 - [GitHub Actions: Configure AWS Credentials](https://github.com/aws-actions/configure-aws-credentials)
