@@ -7,7 +7,7 @@ function App() {
   const [dragActive, setDragActive] = useState(false);
   const inputRef = useRef(null);
 
-  const API_ENDPOINT = "https://1mh4vq4ac1.execute-api.us-east-1.amazonaws.com/upload";
+  const API_ENDPOINT = "https://ptfs2nuola.execute-api.us-east-1.amazonaws.com/upload";
 
   const handleDrag = (e) => {
     e.preventDefault();
