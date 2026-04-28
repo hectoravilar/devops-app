@@ -17,6 +17,18 @@ resource "aws_s3_bucket" "docflow_bucket" {
   tags = {
     Name        = lower(var.project_name)
     Environment = lower(var.environment)
+
+  }
+}
+resource "aws_s3_bucket_cors_configuration" "docflow_cors" {
+  bucket = aws_s3_bucket.docflow_bucket.id
+
+  cors_rule {
+    allowed_headers = ["*"]
+    allowed_methods = ["PUT", "POST"]
+    allowed_origins = ["*"]
+    expose_headers  = ["ETag"]
+    max_age_seconds = 3000
   }
 }
 resource "aws_sqs_queue" "docflow_dlq" {
