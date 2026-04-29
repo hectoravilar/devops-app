@@ -49,6 +49,36 @@ resource "aws_sqs_queue" "docflow_queue" {
     Environment = lower(var.environment)
   }
 }
+data "aws_iam_policy_document" "s3_to_sqs_policy" {
+  statement {
+    effect = "Allow"
+    principals {
+      type        = "Service"
+      identifiers = ["s3.amazonaws.com"]
+    }
+    actions   = ["sqs:SendMessage"]
+    resources = [aws_sqs_queue.docflow_queue.arn]
+
+    condition {
+      test     = "ArnEquals"
+      variable = "aws:SourceArn"
+      values   = [aws_s3_bucket.docflow_bucket.arn]
+    }
+
+  }
+}
+resource "aws_sqs_queue_policy" "sqs_policy_attachment" {
+  queue_url = aws_sqs_queue.docflow_queue.id
+  policy    = data.aws_iam_policy_document.s3_to_sqs_policy.json
+}
+resource "aws_s3_bucket_notification" "bucket_notification" {
+  bucket = aws_s3_bucket.docflow_bucket.id
+  queue {
+    queue_arn     = aws_sqs_queue.docflow_queue.arn
+    events        = ["s3:ObjectCreated:*"]
+    filter_suffix = ".pdf"
+  }
+}
 
 resource "aws_dynamodb_table" "docflow_table" {
   name             = lower("${var.project_name}-dynamodb-${var.environment}")
