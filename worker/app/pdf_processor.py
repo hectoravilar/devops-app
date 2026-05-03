@@ -3,7 +3,7 @@ import re
 import boto3
 from io import BytesIO
 from pypdf import PdfReader
-from worker.app.config import Config
+from app.config import Config
 
 logger = logging.getLogger(__name__)
 
