@@ -8,7 +8,7 @@ resource "aws_ecs_cluster" "docflow_cluster" {
 }
 # Execution Role: Allows ECS to pull the Docker image and publish logs to CloudWatch
 resource "aws_iam_role" "ecs_execution_role" {
-  name = "docflow_ecs_execution_role"
+  name = "docflow-ecs-execution-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -30,7 +30,7 @@ resource "aws_iam_role_policy_attachment" "ecs_execution_role_policy" {
 
 # Task Role: Grants the Python application access to AWS resources (SQS, DynamoDB, S3)
 resource "aws_iam_role" "docflow_task_role" {
-  name = "docflow_ecs_task_role"
+  name = "docflow-ecs-task-role"
 
   assume_role_policy = jsonencode({
     Version = "2012-10-17"
@@ -46,7 +46,7 @@ resource "aws_iam_role" "docflow_task_role" {
 
 # Custom policy for the Python Worker permissions
 resource "aws_iam_role_policy" "docflow_task_policy" {
-  name = "docflow_task_policy"
+  name = "docflow-task-policy"
   role = aws_iam_role.docflow_task_role.id
 
   policy = jsonencode({
@@ -78,4 +78,13 @@ resource "aws_iam_role_policy" "docflow_task_policy" {
       }
     ]
   })
+}
+resource "aws_cloudwatch_log_group" "docflow_log_group" {
+  name              = "/ecs/docflow-worker"
+  retention_in_days = 7
+
+  tags = {
+    Environment = "dev"
+    Application = "docflow"
+  }
 }
