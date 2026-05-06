@@ -88,3 +88,46 @@ resource "aws_cloudwatch_log_group" "docflow_log_group" {
     Application = "docflow"
   }
 }
+# Fetch the default VPC automatically
+data "aws_vpc" "default" {
+  default = true
+}
+
+# Fetch the subnets associated with the default VPC
+data "aws_subnets" "default" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.default.id]
+  }
+}
+
+# Security Group for the Fargate tasks
+# It must allow outbound traffic to pull the ECR image and talk to AWS APIs
+resource "aws_security_group" "docflow_ecs_sg" {
+  name        = "docflow-ecs-tasks-sg"
+  description = "Allow outbound internet access for Fargate Worker"
+  vpc_id      = data.aws_vpc.default.id
+
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
+# Keeps exactly 1 instance of our Worker running 24/7
+resource "aws_ecs_service" "docflow_worker_service" {
+  name            = "docflow-worker-service"
+  cluster         = aws_ecs_cluster.docflow_cluster.id
+  task_definition = aws_ecs_task_definition.docflow_worker_task.arn
+  desired_count   = 1
+  launch_type     = "FARGATE"
+
+  network_configuration {
+    subnets         = data.aws_subnets.default.ids
+    security_groups = [aws_security_group.docflow_ecs_sg.id]
+    # Required to be true so Fargate can reach the internet to pull the Docker image
+    assign_public_ip = true
+  }
+}
