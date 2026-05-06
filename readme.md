@@ -1,10 +1,14 @@
-# Docflow
 
+# Docflow
 Docflow is a high-performance, **Asynchronous Event-Driven Document Processing Pipeline**. It allows users to upload receipts or invoices, which are then processed in the background to extract critical metadata such as total amounts, dates, and Tax IDs (CNPJ).
 
 ## Objective
 
 The primary goal is to provide a seamless, non-blocking user experience. By utilizing **Presigned URLs**, the system ensures secure file transfers directly to cloud storage, while offloading heavy extraction tasks to a scalable, containerized backend architecture.
+<p align="center">
+  <img width="800" alt="docflowprint" src="https://github.com/user-attachments/assets/a9e34d49-8562-4449-911e-fb4f838990b3" />
+</p>
+
 
 ## Tech Stack
 
@@ -27,6 +31,10 @@ The primary goal is to provide a seamless, non-blocking user experience. By util
 3. **Event Trigger:** S3 natively triggers an event notification that is sent to an **AWS SQS** queue.
 4. **Background Processing:** A Python worker running as a Serverless container on **AWS ECS (Fargate)** consumes the message, downloads the file, and extracts the necessary data using `pypdf`.
 5. **Persistence:** The extracted metadata and processing status are stored in **DynamoDB**.
+
+<p align="center">
+  <img width="800" alt="docflowprint" src="https://github.com/user-attachments/assets/5ae8db9e-45d7-4444-a78c-13368632b1e8" />
+</p>
 
 ## Current Progress & Features
 
