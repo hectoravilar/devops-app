@@ -120,7 +120,7 @@ resource "aws_security_group" "docflow_ecs_sg" {
 resource "aws_ecs_service" "docflow_worker_service" {
   name            = "docflow-worker-service"
   cluster         = aws_ecs_cluster.docflow_cluster.id
-  task_definition = aws_ecs_task_definition.docflow_worker_task.arn
+  task_definition = aws_ecs_task_definition.docflow_service.arn
   desired_count   = 1
   launch_type     = "FARGATE"
 
@@ -130,4 +130,41 @@ resource "aws_ecs_service" "docflow_worker_service" {
     # Required to be true so Fargate can reach the internet to pull the Docker image
     assign_public_ip = true
   }
+}
+
+resource "aws_ecs_task_definition" "docflow_service" {
+  family                   = "docflow-worker-task"
+  network_mode             = "awsvpc"
+  requires_compatibilities = ["FARGATE"]
+  cpu                      = 256 # 0.25 vCPU
+  memory                   = 512 # 512 MB RAM
+
+  # Linking the Roles
+  execution_role_arn = aws_iam_role.ecs_execution_role.arn
+  task_role_arn      = aws_iam_role.docflow_task_role.arn
+
+  container_definitions = jsonencode([
+    {
+      name      = "docflow-worker-container"
+      image     = "779846804202.dkr.ecr.us-east-1.amazonaws.com/docflow-worker-devops:latest"
+      essential = true
+
+      # Injecting Environment Variables
+      environment = [
+        { name = "SQS_QUEUE_URL", value = aws_sqs_queue.docflow_queue.url },
+        { name = "DYNAMODB_TABLE_NAME", value = aws_dynamodb_table.docflow_table.name },
+        { name = "AWS_REGION", value = "us-east-1" }
+      ]
+
+      # Linking CloudWatch Logs 
+      logConfiguration = {
+        logDriver = "awslogs"
+        options = {
+          "awslogs-group"         = aws_cloudwatch_log_group.docflow_log_group.name
+          "awslogs-region"        = "us-east-1"
+          "awslogs-stream-prefix" = "ecs"
+        }
+      }
+    }
+  ])
 }
